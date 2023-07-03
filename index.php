@@ -7,5 +7,10 @@ $dto = new \Steepik\Calc\DTO(
     secondNum: rand(1, 500)
 );
 
-$o = new \Steepik\Calc\CalcHandler();
+$o = new \Steepik\Calc\CalcHandler([
+    new \Steepik\Calc\Modes\Add(),
+    new \Steepik\Calc\Modes\Division(),
+    new \Steepik\Calc\Modes\Substract(),
+    new \Steepik\Calc\Modes\Multiply(),
+]);
 $o->handle($dto);

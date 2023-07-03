@@ -6,10 +6,6 @@ namespace Steepik\Calc;
 
 use Steepik\Calc\Logger\LoggerFactory;
 use Steepik\Calc\Logger\LoggerInfo;
-use Steepik\Calc\Modes\Add;
-use Steepik\Calc\Modes\Division;
-use Steepik\Calc\Modes\Multiply;
-use Steepik\Calc\Modes\Substract;
 
 final class CalcHandler implements Handler
 {
@@ -18,10 +14,18 @@ final class CalcHandler implements Handler
     private array $invalidCombinations = [];
     private int $iterateNum = 0;
 
+    /**
+     * @param array<Mode> $modes
+     */
+    public function __construct(
+        private array $modes
+    ) {
+    }
+
     public function handle(DTO $context): void
     {
-        while (count($this->validCombinations) !== count($this->getModes())) {
-            $modes = $this->getModes();
+        while (count($this->validCombinations) !== count($this->modes)) {
+            $modes = $this->getModesInRandomOrder();
             $this->validCombinations = [];
             $hash = uniqid();
 
@@ -37,7 +41,7 @@ final class CalcHandler implements Handler
 
                 $this->invalidCombinations[$hash][] = $mode->name();
 
-                if (count($this->validCombinations) === count($this->getModes())) {
+                if (count($this->validCombinations) === count($this->modes)) {
                     $this->invalidCombinations[$hash] = [];
                 }
             }
@@ -59,17 +63,10 @@ final class CalcHandler implements Handler
     /**
      * @return array<Mode>
      */
-    private function getModes(): array
+    private function getModesInRandomOrder(): array
     {
-        $modes = [
-            new Division(),
-            new Add(),
-            new Multiply(),
-            new Substract(),
-        ];
+        shuffle($this->modes);
 
-        shuffle($modes);
-
-        return $modes;
+        return $this->modes;
     }
 }
