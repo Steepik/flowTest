@@ -1,0 +1,16 @@
+{
+    "name": "steepik/calc",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Steepik\\Calc\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "steepik"
+        }
+    ],
+    "require": {}
+}
